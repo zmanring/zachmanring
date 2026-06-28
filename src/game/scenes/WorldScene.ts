@@ -114,6 +114,10 @@ export class WorldScene extends Phaser.Scene {
     });
 
     this.game.events.emit(EVENTS.LEVEL_COMPLETE, 'PLAZA');
+
+    // Disable player movement while an info card is open
+    this.game.events.on(EVENTS.OPEN_CARD, () => { this.player.inputEnabled = false; });
+    window.addEventListener('portfolio:requestCloseCard', () => { this.player.inputEnabled = true; });
   }
 
   update() {

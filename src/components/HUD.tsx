@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 const FONT = '"Press Start 2P", monospace';
 const ORANGE = '#DD4400';
 const GREY = '#222222';
+const MAX_SCORE = 4400; // 22 NPCs × 200pts
 
 const LINKS = {
   contact: 'https://linkedin.com/in/zachmanring',
@@ -31,9 +32,14 @@ export function HUD({ onMenuClick }: { onMenuClick?: () => void }) {
   const [score, setScore] = useState(0);
   const [world, setWorld] = useState('PLAZA');
   const [subtitle, setSubtitle] = useState('TOWN');
+  const [showMaxScore, setShowMaxScore] = useState(false);
 
   useEffect(() => {
-    const onCoin = () => setScore(s => s + 200);
+    const onCoin = () => setScore(s => {
+      const next = s + 200;
+      if (next === MAX_SCORE) setTimeout(() => setShowMaxScore(true), 600);
+      return next;
+    });
     const onLevel = (e: Event) => {
       const scene = (e as CustomEvent<string>).detail;
       setWorld(WORLD_NAMES[scene] ?? scene);
@@ -50,6 +56,7 @@ export function HUD({ onMenuClick }: { onMenuClick?: () => void }) {
   const pad = (n: number, len: number) => String(n).padStart(len, '0');
 
   return (
+    <>
     <div style={{
       position: 'fixed',
       top: 0, left: 0, right: 0,
@@ -151,5 +158,67 @@ export function HUD({ onMenuClick }: { onMenuClick?: () => void }) {
         </a>
       </div>
     </div>
+
+    {/* Max score easter egg */}
+
+    {showMaxScore && (
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 9000,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: 'rgba(0,0,0,0.85)',
+        animation: 'fadeIn 0.4s ease',
+      }}>
+        <div style={{
+          background: GREY, border: `4px solid ${ORANGE}`,
+          boxShadow: `8px 8px 0 #7A2600`,
+          padding: '40px 48px', maxWidth: 480, textAlign: 'center',
+          fontFamily: FONT, animation: 'slideUp 0.4s ease',
+        }}>
+          <div style={{ fontSize: 28, marginBottom: 20 }}>🏆</div>
+          <div style={{ fontSize: 10, color: ORANGE, marginBottom: 20, letterSpacing: '0.05em' }}>
+            MAX SCORE!
+          </div>
+          <p style={{ fontSize: 8, color: '#F0EDE8', lineHeight: 2.4, margin: '0 0 12px' }}>
+            WOW. YOU READ EVERYTHING.
+          </p>
+          <p style={{ fontSize: 8, color: '#AAAAAA', lineHeight: 2.4, margin: '0 0 32px' }}>
+            YOU OFFICIALLY KNOW MORE ABOUT ZACH
+            THAN MOST PEOPLE WHO HAVE MET HIM.
+            MAYBE IT'S TIME TO SAY HI?
+          </p>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+            <a
+              href="https://linkedin.com/in/zachmanring"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontSize: 8, color: '#F0EDE8', fontFamily: FONT,
+                textDecoration: 'none', padding: '10px 18px',
+                background: ORANGE, boxShadow: `3px 3px 0 #7A2600`,
+                transition: 'box-shadow 0.08s, transform 0.08s',
+              }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = '1px 1px 0 #7A2600'; el.style.transform = 'translate(2px,2px)'; }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = '3px 3px 0 #7A2600'; el.style.transform = ''; }}
+            >
+              SAY HI ON LINKEDIN
+            </a>
+            <button
+              onClick={() => setShowMaxScore(false)}
+              style={{
+                fontSize: 8, color: '#F0EDE8', fontFamily: FONT,
+                background: '#333', border: 'none', padding: '10px 18px',
+                cursor: 'pointer', boxShadow: '3px 3px 0 #111',
+                transition: 'box-shadow 0.08s, transform 0.08s',
+              }}
+              onMouseEnter={e => { const el = e.currentTarget; el.style.boxShadow = '1px 1px 0 #111'; el.style.transform = 'translate(2px,2px)'; }}
+              onMouseLeave={e => { const el = e.currentTarget; el.style.boxShadow = '3px 3px 0 #111'; el.style.transform = ''; }}
+            >
+              KEEP EXPLORING
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

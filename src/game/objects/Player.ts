@@ -24,6 +24,8 @@ export class Player {
   private shadow: Phaser.GameObjects.Ellipse;
 
   // Thought bubble
+  public inputEnabled = true;
+
   private idleTimer = 0;
   private bubbleVisible = false;
   private bubble!: Phaser.GameObjects.Text;
@@ -64,10 +66,11 @@ export class Player {
 
   update() {
     const body  = this.sprite.body as Phaser.Physics.Arcade.Body;
-    const left  = this.keys.left.isDown  || this.keys.a.isDown;
-    const right = this.keys.right.isDown || this.keys.d.isDown;
-    const up    = this.keys.up.isDown    || this.keys.w.isDown;
-    const down  = this.keys.down.isDown  || this.keys.s.isDown;
+
+    const left  = this.inputEnabled && (this.keys.left.isDown  || this.keys.a.isDown);
+    const right = this.inputEnabled && (this.keys.right.isDown || this.keys.d.isDown);
+    const up    = this.inputEnabled && (this.keys.up.isDown    || this.keys.w.isDown);
+    const down  = this.inputEnabled && (this.keys.down.isDown  || this.keys.s.isDown);
 
     let vx = 0, vy = 0;
     if (left)  vx -= PLAYER_SPEED;
