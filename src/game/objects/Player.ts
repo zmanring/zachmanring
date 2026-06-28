@@ -23,14 +23,31 @@ export class Player {
   private walkFrameB = false;
   private shadow: Phaser.GameObjects.Ellipse;
 
+  // Thought bubble
+  private idleTimer = 0;
+  private bubbleVisible = false;
+  private bubble!: Phaser.GameObjects.Text;
+  private bubbleBg!: Phaser.GameObjects.Graphics;
+  private emojiIndex = 0;
+  private readonly EMOJIS = ['☕', '💻', '🔨', '🎙️', '🏕️', '🎮', '🌲', '📐'];
+  private readonly IDLE_TRIGGER = 5000; // ms before bubble appears
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
     this.shadow = scene.add.ellipse(x, y + 30, 18, 7, 0x000000, 0.22).setDepth(DEPTH.PLAYER - 1);
     this.sprite = scene.physics.add.sprite(x, y, 'player_s').setDepth(DEPTH.PLAYER);
     this.sprite.setCollideWorldBounds(true);
+    this.sprite.setInteractive({ useHandCursor: true });
+    this.sprite.on('pointerup', () => scene.sound.play('hello'));
 
     const body = this.sprite.body as Phaser.Physics.Arcade.Body;
     body.setSize(18, 14).setOffset(7, 46);
+
+    // Thought bubble (hidden until idle)
+    this.bubbleBg = scene.add.graphics().setDepth(DEPTH.PLAYER + 1).setAlpha(0);
+    this.bubble = scene.add.text(0, 0, '', {
+      fontSize: '14px', padding: { x: 6, y: 4 },
+    }).setOrigin(0.5).setDepth(DEPTH.PLAYER + 2).setAlpha(0);
 
     const kb = scene.input.keyboard!;
     this.keys = {
@@ -90,6 +107,58 @@ export class Player {
     this.sprite.setFlipX(this.dir === 'N' ? !this.facingLeft : this.facingLeft);
 
     this.shadow.setPosition(this.sprite.x, this.sprite.y + 30);
+
+    // Thought bubble logic
+    const bx = this.sprite.x + 20;
+    const by = this.sprite.y - 52;
+
+    if (this.moving) {
+      // Stop breathing while walking, reset scale
+      this.idleTimer = 0;
+      if (this.bubbleVisible) {
+        this.bubbleVisible = false;
+        this.scene.tweens.add({ targets: [this.bubble, this.bubbleBg], alpha: 0, duration: 200 });
+      }
+    } else {
+      this.idleTimer += this.scene.game.loop.delta;
+
+      if (this.idleTimer >= this.IDLE_TRIGGER && !this.bubbleVisible) {
+        this.bubbleVisible = true;
+        this.emojiIndex = Math.floor(Math.random() * this.EMOJIS.length);
+        this.showBubble(bx, by);
+      }
+
+      // Cycle emoji every 3s while idle
+      if (this.bubbleVisible && this.idleTimer > this.IDLE_TRIGGER) {
+        const cycleIndex = Math.floor((this.idleTimer - this.IDLE_TRIGGER) / 3000) % this.EMOJIS.length;
+        if (cycleIndex !== this.emojiIndex) {
+          this.emojiIndex = cycleIndex;
+          this.showBubble(bx, by);
+        }
+      }
+    }
+
+    if (this.bubbleVisible) {
+      this.bubble.setPosition(bx, by);
+      this.bubbleBg.setPosition(bx, by);
+    }
+  }
+
+  private showBubble(x: number, y: number) {
+    const emoji = this.EMOJIS[this.emojiIndex];
+    this.bubble.setText(emoji).setPosition(x, y);
+
+    // Redraw background bubble
+    this.bubbleBg.clear();
+    this.bubbleBg.fillStyle(0xffffff, 1);
+    this.bubbleBg.fillRoundedRect(-18, -16, 36, 28, 8);
+    // Little tail dots
+    this.bubbleBg.fillCircle(0, 14, 4);
+    this.bubbleBg.fillCircle(-4, 20, 2.5);
+    this.bubbleBg.fillCircle(-7, 25, 1.5);
+    this.bubbleBg.setPosition(x, y);
+
+    this.scene.tweens.add({ targets: [this.bubble, this.bubbleBg], alpha: 1, duration: 300, ease: 'Back.Out' });
   }
 
   get x() { return this.sprite.x; }

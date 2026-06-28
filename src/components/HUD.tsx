@@ -5,9 +5,6 @@ const ORANGE = '#DD4400';
 const GREY = '#222222';
 
 const LINKS = {
-  podcast: 'https://pixelbroccoli.com',
-  sgw:     'https://southerngingerworkshop.com',
-  youtube: 'https://youtube.com/@southernginger',
   contact: 'https://linkedin.com/in/zachmanring',
 };
 
@@ -29,34 +26,6 @@ const WORLD_SUBTITLES: Record<string, string> = {
   CHURCH:   'COMMUNITY',
 };
 
-function NavLink({ href, label }: { href: string; label: string }) {
-  return (
-    <a
-      href={href}
-      target={href.startsWith('mailto') ? undefined : '_blank'}
-      rel="noopener noreferrer"
-      style={{
-        fontSize: 7, color: '#AAAAAA', fontFamily: FONT,
-        textDecoration: 'none', padding: '3px 7px',
-        border: '1px solid #444444',
-        transition: 'color 0.15s, border-color 0.15s',
-        whiteSpace: 'nowrap',
-      }}
-      onMouseEnter={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.color = ORANGE;
-        el.style.borderColor = ORANGE;
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.color = '#AAAAAA';
-        el.style.borderColor = '#444444';
-      }}
-    >
-      {label}
-    </a>
-  );
-}
 
 export function HUD({ onMenuClick }: { onMenuClick?: () => void }) {
   const [score, setScore] = useState(0);
@@ -119,54 +88,42 @@ export function HUD({ onMenuClick }: { onMenuClick?: () => void }) {
         </div>
       </div>
 
-      {/* WORLD */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+      {/* WORLD — centered */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
         <span style={{ fontSize: 7, color: '#666666' }}>WORLD</span>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-          <span style={{ fontSize: 12, color: '#F0EDE8' }}>{world}</span>
-          <span style={{ fontSize: 7, color: ORANGE }}>{subtitle}</span>
+          <span style={{ fontSize: 12, color: '#F0EDE8', transition: 'opacity 0.3s' }}>{world}</span>
+          <span style={{ fontSize: 7, color: ORANGE, transition: 'opacity 0.3s' }}>{subtitle}</span>
         </div>
       </div>
 
-      {/* MENU button */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+      {/* RIGHT — Menu + LinkedIn */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
         <button
           onClick={onMenuClick}
           title="Portfolio Directory (M)"
           style={{
             fontSize: 8, color: '#F0EDE8', fontFamily: FONT,
-            background: 'transparent', border: '2px solid #444444',
-            padding: '6px 14px', cursor: 'pointer',
-            whiteSpace: 'nowrap', transition: 'border-color 0.1s, color 0.1s',
+            background: '#333333', border: 'none',
+            padding: '8px 14px', cursor: 'pointer',
+            boxShadow: '3px 3px 0 #111111',
+            whiteSpace: 'nowrap', transition: 'box-shadow 0.08s, transform 0.08s',
           }}
           onMouseEnter={e => {
             const el = e.currentTarget;
-            el.style.borderColor = ORANGE;
-            el.style.color = ORANGE;
+            el.style.boxShadow = '1px 1px 0 #111111';
+            el.style.transform = 'translate(2px,2px)';
           }}
           onMouseLeave={e => {
             const el = e.currentTarget;
-            el.style.borderColor = '#444444';
-            el.style.color = '#F0EDE8';
+            el.style.boxShadow = '3px 3px 0 #111111';
+            el.style.transform = '';
           }}
         >
-          MENU
+          MENU (M)
         </button>
-        <span style={{ fontSize: 6, color: '#555555' }}>PRESS M</span>
-      </div>
 
-      {/* QUICK LINKS */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-        <span style={{ fontSize: 7, color: '#666666' }}>FIND ME</span>
-        <div style={{ display: 'flex', gap: 6 }}>
-          <NavLink href={LINKS.podcast} label="PODCAST" />
-          <NavLink href={LINKS.sgw}     label="SGW" />
-          <NavLink href={LINKS.youtube} label="YOUTUBE" />
-        </div>
-      </div>
-
-      {/* LINKEDIN */}
-      <a
+        <a
         href={LINKS.contact}
         target="_blank"
         rel="noopener noreferrer"
@@ -191,7 +148,8 @@ export function HUD({ onMenuClick }: { onMenuClick?: () => void }) {
         }}
       >
         LINKEDIN
-      </a>
+        </a>
+      </div>
     </div>
   );
 }

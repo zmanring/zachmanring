@@ -20,6 +20,8 @@ export class BootScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Load hand-drawn character sprites
+    // Audio
+    this.load.audio('hello', 'assets/hello.mp3');
     // Zach sprites — used for both NPC and player
     this.load.image('npc_zach_s', 'assets/zach_s.png');
     this.load.image('npc_zach_n', 'assets/zach_n.png');
