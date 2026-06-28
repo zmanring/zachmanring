@@ -8,16 +8,6 @@ export class BootScene extends Phaser.Scene {
   constructor() { super({ key: SCENES.BOOT }); }
 
   preload() {
-    const bar = this.add.graphics();
-    const box = this.add.graphics();
-    box.fillStyle(0x222222); box.fillRect(GAME_WIDTH / 2 - 160, GAME_HEIGHT / 2 - 12, 320, 24);
-    this.load.on('progress', (v: number) => {
-      bar.clear();
-      bar.fillStyle(PALETTE.ACCENT); bar.fillRect(GAME_WIDTH / 2 - 158, GAME_HEIGHT / 2 - 10, 316 * v, 20);
-    });
-    this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 40, 'LOADING...', {
-      fontSize: '10px', color: '#F0EDE8', fontFamily: FONT,
-    }).setOrigin(0.5);
 
     // Load hand-drawn character sprites
     // Audio
@@ -49,7 +39,7 @@ export class BootScene extends Phaser.Scene {
     this.load.image('npc_wife_s',         'assets/wife_s.png');
     this.load.image('npc_wife_n',         'assets/wife_n.png');
 
-    this.load.on('complete', () => { bar.destroy(); box.destroy(); });
+    this.load.on('complete', () => { window.dispatchEvent(new CustomEvent('portfolio:ready')); });
 
     this.generateTextures();
   }

@@ -27,7 +27,7 @@ export const ZONE_DEFS = [
     id: 'STUDIO',
     name: 'PODCAST STUDIO',
     sub: 'pixel broccoli',
-    color: '#C42DD7',
+    color: '#08D7A9',
     bg: '#06102B',
     ids: ['podcast-pixel-broccoli', 'sgw-youtube', 'film-imdb', 'community-sww'],
   },

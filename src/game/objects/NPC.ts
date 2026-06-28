@@ -14,6 +14,8 @@ export class NPC {
   private home:         { x: number; y: number };
   private wanderRadius: number;
   private prompt:       Phaser.GameObjects.Text;
+  private promptBg:     Phaser.GameObjects.Graphics;
+  private labelBg:      Phaser.GameObjects.Graphics;
   private shadow:       Phaser.GameObjects.Ellipse;
   private closeHandler: () => void;
   private movingNorth = false;
@@ -56,17 +58,29 @@ export class NPC {
       .setSize(16, 14).setOffset(8, 46)
       .setCollideWorldBounds(true);
 
+    // Name label pill background
+    this.labelBg = scene.add.graphics().setDepth(DEPTH.UI - 0.1);
+
     // Name label (floating, always visible)
     const label = scene.add.text(x, y - 42, item.title, {
-      fontSize: '5px', color: '#DD4400', fontFamily: FONT,
-      backgroundColor: '#111111', padding: { x: 4, y: 2 },
+      fontSize: '5px', color: '#F0EDE8', fontFamily: FONT,
+      padding: { x: 5, y: 3 },
     }).setOrigin(0.5).setDepth(DEPTH.UI);
+
+    // Draw label pill once text dimensions are known
+    this.drawPill(this.labelBg, label.width, label.height, 0x111111, 1);
+
+    // Proximity prompt pill background
+    this.promptBg = scene.add.graphics().setDepth(DEPTH.UI - 0.1).setAlpha(0);
 
     // Proximity prompt (hidden until near)
     this.prompt = scene.add.text(x, y - 56, '[ E ]', {
       fontSize: '6px', color: '#F0EDE8', fontFamily: FONT,
-      backgroundColor: '#DD4400', padding: { x: 4, y: 3 },
+      padding: { x: 5, y: 3 },
     }).setOrigin(0.5).setDepth(DEPTH.UI).setAlpha(0);
+
+    // Draw prompt pill
+    this.drawPill(this.promptBg, this.prompt.width, this.prompt.height, 0xDD4400, 1);
 
     // Click to open — pointerup so drag doesn't trigger it
     this.sprite.on('pointerup', () => {
@@ -92,6 +106,12 @@ export class NPC {
   }
 
   private _label: Phaser.GameObjects.Text;
+
+  private drawPill(g: Phaser.GameObjects.Graphics, w: number, h: number, color: number, alpha: number) {
+    g.clear();
+    g.fillStyle(color, alpha);
+    g.fillRoundedRect(-w / 2, -h / 2, w, h, h / 2);
+  }
 
   // ── Wander ──────────────────────────────────────────────────────────────
 
@@ -149,12 +169,14 @@ export class NPC {
 
     if (near !== this.isNear) {
       this.isNear = near;
-      this.scene.tweens.add({ targets: this.prompt, alpha: near ? 1 : 0, duration: 150 });
+      this.scene.tweens.add({ targets: [this.prompt, this.promptBg], alpha: near ? 1 : 0, duration: 150 });
     }
 
     // Keep floating elements above sprite
     this.prompt.setPosition(this.sprite.x, this.sprite.y - 56);
+    this.promptBg.setPosition(this.sprite.x, this.sprite.y - 56);
     this._label.setPosition(this.sprite.x, this.sprite.y - 42);
+    this.labelBg.setPosition(this.sprite.x, this.sprite.y - 42);
     this.shadow.setPosition(this.sprite.x, this.sprite.y + 30);
   }
 

@@ -24,6 +24,15 @@ const typeLabel: Record<PortfolioItem['type'], string> = {
   article:        '// ARTICLE',
 };
 
+// Returns true if the color is bright enough that white text would be hard to read
+function isLight(hex: string): boolean {
+  const n = parseInt(hex.replace('#', ''), 16);
+  const r = (n >> 16) & 0xff;
+  const g = (n >> 8)  & 0xff;
+  const b =  n        & 0xff;
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.55;
+}
+
 function darken(hex: string): string {
   // Produce a darker shadow color from the accent
   const n = parseInt(hex.slice(1), 16);
@@ -72,6 +81,9 @@ export function InfoCard({
 }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
   const shadow  = darken(zoneColor);
+  const light   = isLight(zoneColor);
+  const btnBg   = light ? '#222222' : zoneColor;
+  const btnText = light ? zoneColor  : '#F0EDE8';
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
@@ -215,7 +227,7 @@ export function InfoCard({
             style={{
               display: 'inline-block', marginTop: 24,
               padding: '12px 24px',
-              background: zoneColor, color: '#F0EDE8',
+              background: btnBg, color: btnText,
               textDecoration: 'none', fontSize: 11, fontFamily: FONT,
               boxShadow: `4px 4px 0 ${shadow}`,
               transition: 'box-shadow 0.08s, transform 0.08s',
@@ -282,8 +294,8 @@ export function InfoCard({
             onClick={onClose}
             aria-label="Close"
             style={{
-              background: zoneColor, border: 'none',
-              color: '#F0EDE8', fontSize: 13, fontFamily: FONT,
+              background: btnBg, border: 'none',
+              color: btnText, fontSize: 13, fontFamily: FONT,
               cursor: 'pointer', padding: '4px 9px', lineHeight: 1,
             }}
           >

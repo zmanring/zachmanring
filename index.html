@@ -57,6 +57,29 @@
         display: block;
         outline: none;
       }
+      /* CRT shape handled by SVG bezel overlay in GameContainer */
+
+      /* CRT effect animations */
+      @keyframes crtFlicker {
+        0%   { opacity: 1; }
+        30%  { opacity: 0.97; }
+        60%  { opacity: 1; }
+        80%  { opacity: 0.98; }
+        100% { opacity: 1; }
+      }
+      @keyframes crt-blink {
+        0%, 49% { opacity: 1; }
+        50%, 100% { opacity: 0; }
+      }
+      @keyframes crt-msg-in {
+        from { opacity: 0; transform: translateY(2px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes crtScan {
+        0%   { transform: translateY(0); }
+        100% { transform: translateY(4px); }
+      }
+
       /* Skip navigation link — visible on keyboard focus only */
       .skip-link {
         position: absolute;
