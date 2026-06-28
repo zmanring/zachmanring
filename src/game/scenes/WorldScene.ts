@@ -19,17 +19,18 @@ const NPC_DEFS: [number, number, string, number, string, string][] = [
 
   // ── Workshop (NW) ─────────────────────────────────────────────────────
   [340, 150,  'maker',        180, 'intro-origin',           'WORKSHOP'],
-  [560, 285,  'maker',        160, 'intro-sgw',              'WORKSHOP'],
-  [240, 390,  'maker',        140, 'project-sgw-plans',      'WORKSHOP'],
+  [760, 285,  'maker',        160, 'intro-sgw',              'WORKSHOP'],
+  [490, 390,  'maker',        140, 'project-sgw-plans',      'WORKSHOP'],
 
   // ── Camping ───────────────────────────────────────────────────────────
-  [1370, 150,  'casual',       60, 'project-rv-build',       'CAMPING'],
+  [1370, 400,  'casual',       60, 'project-rv-build',       'CAMPING'],
+  [1470, 480,  'wife',         80, 'easter-egg-wife',        'CAMPING'],
 
   // ── Podcast Studio (NE) ───────────────────────────────────────────────
   [2080, 180,  'brocc',       180, 'podcast-pixel-broccoli', 'STUDIO'],
   [1860, 315,  'podcaster',   160, 'community-sww',          'STUDIO'],
   [2260, 375,  'casual',      140, 'sgw-youtube',            'STUDIO'],
-  [2180, 270,  'cameraman',   140, 'film-imdb',              'STUDIO'],
+  [2180, 520,  'cameraman',   140, 'film-imdb',              'STUDIO'],
 
   // ── Design Office (SW) ────────────────────────────────────────────────
   [320, 1065,  'developer',   190, 'motif-overview',         'OFFICE'],

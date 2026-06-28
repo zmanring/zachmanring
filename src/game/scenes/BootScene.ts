@@ -18,6 +18,35 @@ export class BootScene extends Phaser.Scene {
     this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 40, 'LOADING...', {
       fontSize: '10px', color: '#F0EDE8', fontFamily: FONT,
     }).setOrigin(0.5);
+
+    // Load hand-drawn character sprites
+    // Zach sprites — used for both NPC and player
+    this.load.image('npc_zach_s', 'assets/zach_s.png');
+    this.load.image('npc_zach_n', 'assets/zach_n.png');
+    this.load.image('player_s',   'assets/zach_s.png');
+    this.load.image('player_n',   'assets/zach_n.png');
+    this.load.image('player_s_b', 'assets/zach_s_b.png');
+    this.load.image('player_n_b', 'assets/zach_n_b.png');
+    // NPC sprites
+    this.load.image('npc_maker_s',        'assets/maker_s.png');
+    this.load.image('npc_maker_n',        'assets/maker_n.png');
+    this.load.image('npc_podcaster_s',    'assets/podcaster_s.png');
+    this.load.image('npc_podcaster_n',    'assets/podcaster_n.png');
+    this.load.image('npc_developer_s',    'assets/developer_s.png');
+    this.load.image('npc_developer_n',    'assets/developer_n.png');
+    this.load.image('npc_engineer_s',     'assets/engineer_s.png');
+    this.load.image('npc_engineer_n',     'assets/engineer_n.png');
+    this.load.image('npc_casual_s',       'assets/casual_s.png');
+    this.load.image('npc_casual_n',       'assets/casual_n.png');
+    this.load.image('npc_professional_s', 'assets/professional_s.png');
+    this.load.image('npc_professional_n', 'assets/professional_n.png');
+    this.load.image('npc_cameraman_s',    'assets/cameraman_s.png');
+    this.load.image('npc_cameraman_n',    'assets/cameraman_n.png');
+    this.load.image('npc_brocc_s',        'assets/brocc_s.png');
+    this.load.image('npc_brocc_n',        'assets/brocc_n.png');
+    this.load.image('npc_wife_s',         'assets/wife_s.png');
+    this.load.image('npc_wife_n',         'assets/wife_n.png');
+
     this.load.on('complete', () => { bar.destroy(); box.destroy(); });
 
     this.generateTextures();
@@ -27,8 +56,13 @@ export class BootScene extends Phaser.Scene {
     this.genGroundTiles();
     this.genPlayerSprites();
     this.genNPCSprites();
-    this.genBroccSprite();
+    // this.genBroccSprite(); // using loaded PNG sprites
     this.genDecorations();
+  }
+
+  // ── Load asset-based sprites (optional, can override procedural) ──────────────
+  private loadAssetSprites() {
+    // Loaded in preload() — these textures override procedural generation if present
   }
 
   // ── Ground ────────────────────────────────────────────────────────────────
@@ -144,10 +178,7 @@ export class BootScene extends Phaser.Scene {
       g.generateTexture(key, 32, 32); g.destroy();
     };
 
-    draw('player_s',   'S', false);
-    draw('player_s_b', 'S', true);
-    draw('player_n',   'N', false);
-    draw('player_n_b', 'N', true);
+    // player_s / player_n are loaded from SVG in preload(); only generate east fallback
     draw('player_e',   'E', false);
     draw('player_e_b', 'E', true);
   }
@@ -155,14 +186,15 @@ export class BootScene extends Phaser.Scene {
   // ── NPCs ─────────────────────────────────────────────────────────────────
 
   private genNPCSprites() {
-    this.drawMakerNPC();
-    this.drawPodcasterNPC();
-    this.drawDeveloperNPC();
-    this.drawEngineerNPC();
-    this.drawCasualNPC();
-    this.drawProfessionalNPC();
-    this.drawZachNPC();
-    this.genCameramanSprite();
+    // All NPC sprites loaded from PNG assets in preload()
+    // this.drawMakerNPC();
+    // this.drawPodcasterNPC();
+    // this.drawDeveloperNPC();
+    // this.drawEngineerNPC();
+    // this.drawCasualNPC();
+    // this.drawProfessionalNPC();
+    // this.drawZachNPC();
+    // this.genCameramanSprite();
   }
 
   // ── NPC base renderer (outline-first, chibi proportions) ──────────────────

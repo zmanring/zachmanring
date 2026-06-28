@@ -38,7 +38,7 @@ export class NPC {
     this.isSvgChar    = textureBase.startsWith('char_');
 
     // Shadow beneath sprite
-    this.shadow = scene.add.ellipse(x, y + 13, 18, 7, 0x000000, 0.22)
+    this.shadow = scene.add.ellipse(x, y + 30, 18, 7, 0x000000, 0.22)
       .setDepth(DEPTH.NPC - 1);
 
     const initialTex = this.isSvgChar ? textureBase : `${textureBase}_s`;
@@ -46,23 +46,23 @@ export class NPC {
       .setDepth(DEPTH.NPC)
       .setInteractive({ useHandCursor: true });
 
-    // SVG characters are ~48px tall — scale down to feel right in the world
+    // SVG characters are larger — scale down to match world
     if (this.isSvgChar) {
       this.sprite.setScale(0.55);
     }
 
     (this.sprite.body as Phaser.Physics.Arcade.Body)
-      .setSize(16, 14).setOffset(8, 18)
+      .setSize(16, 14).setOffset(8, 46)
       .setCollideWorldBounds(true);
 
     // Name label (floating, always visible)
-    const label = scene.add.text(x, y - 24, item.title, {
+    const label = scene.add.text(x, y - 42, item.title, {
       fontSize: '5px', color: '#DD4400', fontFamily: FONT,
       backgroundColor: '#111111', padding: { x: 4, y: 2 },
     }).setOrigin(0.5).setDepth(DEPTH.UI);
 
     // Proximity prompt (hidden until near)
-    this.prompt = scene.add.text(x, y - 36, '[ E ]', {
+    this.prompt = scene.add.text(x, y - 56, '[ E ]', {
       fontSize: '6px', color: '#F0EDE8', fontFamily: FONT,
       backgroundColor: '#DD4400', padding: { x: 4, y: 3 },
     }).setOrigin(0.5).setDepth(DEPTH.UI).setAlpha(0);
@@ -149,9 +149,9 @@ export class NPC {
     }
 
     // Keep floating elements above sprite
-    this.prompt.setPosition(this.sprite.x, this.sprite.y - 36);
-    this._label.setPosition(this.sprite.x, this.sprite.y - 24);
-    this.shadow.setPosition(this.sprite.x, this.sprite.y + 13);
+    this.prompt.setPosition(this.sprite.x, this.sprite.y - 56);
+    this._label.setPosition(this.sprite.x, this.sprite.y - 42);
+    this.shadow.setPosition(this.sprite.x, this.sprite.y + 30);
   }
 
   // ── Open ──────────────────────────────────────────────────────────────

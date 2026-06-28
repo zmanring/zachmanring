@@ -11,6 +11,30 @@ export interface PortfolioItem {
   image?: string;
 }
 
+// ── Easter Egg ────────────────────────────────────────────────────────────────
+export const easterEggData: PortfolioItem[] = [
+  {
+    id: 'easter-egg-wife',
+    levelId: 1,
+    type: 'info',
+    title: '¡Hola! Soy la Esposa 💁‍♀️',
+    shortDesc: 'La mujer detrás del hombre... y honestamente, la más inteligente de los dos.',
+    longDesc: `¡Me encontraste! Felicitaciones, eres muy curioso/a. 🎉
+
+Soy la esposa de Zach — colombiana, orgullosa, y la razón por la que este hombre tiene buen gusto.
+
+Datos importantes que Zach no te va a decir:
+→ Yo le digo cuándo algo se ve mal
+→ Yo le digo cuándo algo se ve bien
+→ Sin mí, probablemente viviría en el taller
+
+Si este portafolio te impresionó, en parte es mérito mío. El otro parte fue él, supongo. 😄
+
+¡Gracias por jugar!`,
+    tags: ['easter egg', '🇨🇴', 'familia'],
+  },
+];
+
 // ── Level 1: Introduction ──────────────────────────────────────────────────
 export const level1Data: PortfolioItem[] = [
   {
@@ -410,6 +434,7 @@ Career history, endorsements, and the professional record of 25+ years in web de
 ];
 
 export const allPortfolioData: PortfolioItem[] = [
+  ...easterEggData,
   ...level1Data,
   ...level2Data,
   ...level3Data,

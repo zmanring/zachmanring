@@ -17,17 +17,20 @@ export class Player {
     s:     Phaser.Input.Keyboard.Key;
   };
   private dir: Dir = 'S';
+  private facingLeft = false;
+  private moving = false;
   private walkTimer = 0;
   private walkFrameB = false;
-  private moving = false;
+  private shadow: Phaser.GameObjects.Ellipse;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
+    this.shadow = scene.add.ellipse(x, y + 30, 18, 7, 0x000000, 0.22).setDepth(DEPTH.PLAYER - 1);
     this.sprite = scene.physics.add.sprite(x, y, 'player_s').setDepth(DEPTH.PLAYER);
     this.sprite.setCollideWorldBounds(true);
 
     const body = this.sprite.body as Phaser.Physics.Arcade.Body;
-    body.setSize(18, 14).setOffset(7, 18);
+    body.setSize(18, 14).setOffset(7, 46);
 
     const kb = scene.input.keyboard!;
     this.keys = {
@@ -66,18 +69,27 @@ export class Player {
     else if (up)    this.dir = 'N';
     else if (left || right) this.dir = 'E';
 
-    // Walk cycle timer
+    // Track last horizontal facing so it persists when stopping
+    if (left)  this.facingLeft = true;
+    if (right) this.facingLeft = false;
+
+    // Walk cycle
     if (this.moving) {
       this.walkTimer += this.scene.game.loop.delta;
       if (this.walkTimer > 140) { this.walkFrameB = !this.walkFrameB; this.walkTimer = 0; }
     } else {
       this.walkFrameB = false;
+      this.walkTimer = 0;
     }
 
+    // East uses south sprite, flipped
+    const baseDir = this.dir === 'E' ? 's' : this.dir.toLowerCase();
     const frame = this.moving && this.walkFrameB ? '_b' : '';
-    const key   = `player_${this.dir.toLowerCase()}${frame}`;
-    this.sprite.setTexture(key);
-    this.sprite.setFlipX(this.dir === 'E' && left);
+    this.sprite.setTexture(`player_${baseDir}${frame}`);
+    // North sprite shows the back, so left/right is mirrored
+    this.sprite.setFlipX(this.dir === 'N' ? !this.facingLeft : this.facingLeft);
+
+    this.shadow.setPosition(this.sprite.x, this.sprite.y + 30);
   }
 
   get x() { return this.sprite.x; }
