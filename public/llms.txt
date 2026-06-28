@@ -1,0 +1,159 @@
+# Zach Manring — zachmanring.me
+
+Design Systems Architect · Front-End Engineer · Podcast Host · Maker
+Atlanta, GA
+LinkedIn: https://linkedin.com/in/zachmanring
+GitHub: https://github.com/zmanring
+
+---
+
+## About
+
+Zach Manring is a Design Systems Architect and Front-End Engineer with 25+ years building for the web — from early-stage front-end engineering to leading enterprise-scale design systems adopted by 550+ design teams and 680+ product teams across 2,000+ repositories. He is based in Metro Atlanta, Georgia.
+
+He also runs a basement workshop (Southern Ginger Workshop), co-hosts a podcast (Pixel Broccoli), serves as a volunteer Technical Director at Woodstock City Church, and built this portfolio as an interactive game using Phaser 3 and React.
+
+---
+
+## Career
+
+### 25+ Years in the Craft
+From front-end engineer to design systems architect — full stack depth throughout.
+
+Built for the web since Flash was a career move and jQuery was cutting-edge. Over 25+ years, moved from front-end engineering into design systems architecture — leading teams, shaping product strategy, and shipping things that millions of people use. Flagship work: a global design system at enterprise scale, adopted by 550+ design teams and 680+ product teams across 2,000+ repositories. Experience spans agency, startup, and enterprise.
+
+LinkedIn: https://linkedin.com/in/zachmanring
+
+### What I'm Up To (Current)
+Design systems, a basement workshop, a podcast, and this game.
+
+Currently focused on:
+- Design systems — maintaining and evolving an enterprise design system at scale
+- Southern Ginger Workshop — building things in the basement shop
+- Pixel Broccoli — a podcast about tech, creativity, and the future of work
+- AI experiments — exploring how generative tools change what's possible
+
+Open to conversations about design systems leadership, front-end architecture, AI tooling, and creative collaboration.
+
+Contact: https://linkedin.com/in/zachmanring
+
+---
+
+## Design Systems Work
+
+### Enterprise Design System (Case Study)
+Enterprise-scale design system. 550+ design teams. 680+ product teams. 2,000+ repos.
+
+Architected and led a global design system — the single source of truth for UI components, design tokens, and front-end patterns across one of the world's largest digital platforms. Spans React, Angular, and Web Components, consumed by teams in over 2,000 repositories. The challenge wasn't building components — it was building a system that teams would actually adopt, contribute to, and trust over time.
+
+### 5 Days → 1.5 Days (Scaffolding Automation)
+Automated scaffolding cut component creation time by 70%.
+
+Reduced the time to scaffold a new design-system-compliant component from 5 days to 1.5 days. Identified repetitive work (boilerplate, test setup, Storybook config, token wiring) and built tooling to automate it. Result: faster contribution, lower barrier to entry, more consistent output.
+
+### GitHub Copilot + AI Tooling
+AI-assisted component generation. 30% productivity improvement measured.
+
+Led the integration of GitHub Copilot into the design system workflow — building the context and tooling that makes it actually useful. Custom prompts, component-aware code completion, and AI-assisted documentation generation helped teams move faster with higher consistency. Measured result: 30% productivity improvement in component development cycles.
+
+### Multi-Framework Architecture
+React, Angular, and Web Components — one system, no chaos.
+
+Supports multiple frameworks through a token-first approach and a Web Components core that React and Angular wrappers sit on top of. Designed the abstraction layer that makes this work, and the contribution model that keeps it consistent as hundreds of teams contribute.
+
+### Leading at Scale
+Aligning 550+ design teams and 680+ product teams on shared standards.
+
+Led teams through migrations, adoption campaigns, and platform rewrites. Aligned stakeholders across design, engineering, and product on shared standards — without mandating them. Core principle: make the right way the easy way.
+
+---
+
+## Southern Ginger Workshop
+
+Website: https://southerngingerworkshop.com
+YouTube: https://youtube.com/@southernginger
+
+### Background
+Grew up watching dad and grandpa build in their shops. That instinct — to make things with your hands — never left. Today runs a basement workshop in Metro Atlanta building custom woodworking, CNC work, teardrop trailers, and RV restorations alongside a career in design systems.
+
+### Southern Ginger Workshop (Project)
+Custom woodworking, CNC, metalworking — built out of a basement in Atlanta.
+
+Builds: light-up wooden signs, custom benches and furniture, teardrop trailers (full builds), aluminum badges and CNC work, RV restorations and modifications. Also creates weekly YouTube videos documenting the design and build process.
+
+### SGW Digital Products
+CNC plans, woodworking templates, and DIY project files.
+
+Sells digital products for makers: CNC cornhole board files (VCarve + SVG + DXF), Kreg Jig K4 pocket hole station plans, shop organization and workbench plans, RV modification guides and templates.
+
+Products: https://southerngingerworkshop.com/products
+
+### RV Rebuild + Custom Wrap
+Rebuilt a Class A motorhome from the frame up. Then designed the wrap himself.
+
+Inherited a Class A motorhome and fully restored it: electrical, plumbing, interior renovation, mechanical work. Also designed the full-body custom wrap — color scheme, swoosh layout, geometry. Documented on YouTube.
+
+---
+
+## Podcast — Pixel Broccoli
+
+Website: https://pixelbroccoli.com
+Spotify: https://open.spotify.com/show/033gFTqCwsukpXM8B1ruUm
+
+Pixel Broccoli is a podcast co-hosted with Evan and Brocc — an AI co-host. Each episode unpacks what AI is actually doing to the world: the hype, the reality, and the stuff nobody's saying out loud yet.
+
+Recent episodes:
+- #004 — Build Because You Love It: why we build, when it's expression vs. avoidance, and Gen Z rejecting AI slop
+- #003 — Who Gets the 2AM Call? What happens when AI-generated code breaks in prod?
+- #002 — Do We Even Need This? Tech we've built and quietly stopped using
+- #001 — Meet the Hosts. Yes, One Is an AI
+
+### Southern Ginger on YouTube
+Weekly build videos — woodworking, CNC, metalworking, trailers, and more.
+https://youtube.com/@southernginger
+
+### 1st Assistant Director (Film)
+Short film productions — on set as 1st AD, keeping the day on schedule.
+IMDb: https://www.imdb.com/name/nm13852660/
+
+Crewed on short film productions as 1st Assistant Director. Managed on-set logistics and shot scheduling, coordinated cast, crew, and department heads.
+
+### Southern Woodworkers (Community)
+A Facebook community for southern makers — camaraderie, education, and good vibes.
+https://www.facebook.com/groups/southernwoodworkers
+
+Runs Southern Woodworkers, a Facebook group for makers in the South. Community-first, education-focused, open to all skill levels.
+
+---
+
+## Code & Projects
+
+GitHub: https://github.com/zmanring
+
+### This Portfolio Game
+A Phaser 3 + React portfolio — built with Phaser 3, React 18, Vite, and TypeScript. All graphics are procedurally generated. The portfolio site at zachmanring.me is itself an interactive side-scrolling game.
+
+### Pixel Broccoli Brocc (Open Source)
+Open-source repo for the Pixel Broccoli podcast — ideas, episodes, tooling.
+https://github.com/zmanring/brocc
+
+---
+
+## Community & Service
+
+### Technical Director — Woodstock City Church
+Volunteer TD running audio, video, and lighting for Sunday services in Woodstock, GA.
+https://woodstockcity.org/
+
+Volunteers as Technical Director at Woodstock City Church — managing audio, video, and lighting for Sunday morning services. Live mixing for full band worship sets, ProPresenter / graphics for lyrics and speaker support, multi-camera livestream direction, lighting design and console operation. Woodstock City is part of the North Point Ministries family.
+
+---
+
+## Contact
+
+LinkedIn: https://linkedin.com/in/zachmanring
+LinkedIn: https://linkedin.com/in/zachmanring
+GitHub: https://github.com/zmanring
+Podcast: https://pixelbroccoli.com
+Workshop: https://southerngingerworkshop.com
+YouTube: https://youtube.com/@southernginger
