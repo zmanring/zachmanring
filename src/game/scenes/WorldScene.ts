@@ -34,7 +34,7 @@ const NPC_DEFS: [number, number, string, number, string, string][] = [
   [1947, 865,  'professional', 100, 'church-td', 'CHURCH'],
 ];
 
-const TILE_SIZE = 48;
+const TILE_SIZE = 40;
 
 // Compute pixel bounding box for a zone from the tile map
 function getZoneBounds(tileMap: Record<string, string>, zone: string, tileSz: number) {
