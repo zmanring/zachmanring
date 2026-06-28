@@ -10,41 +10,28 @@ import zoneData from '../../data/zones.json';
 // ── NPC spawn definitions ────────────────────────────────────────────────────
 // Each entry: [x, y, outfitKey, wanderRadius, portfolioItemId, zone]
 const NPC_DEFS: [number, number, string, number, string, string][] = [
-  // ── Town Plaza ────────────────────────────────────────────────────────
-  [1280, 630,  'zach',         40,  'contact-zach',          'PLAZA'],
-  [1280, 675,  'maker',       170,  'intro-career',          'PLAZA'],
-  [1390, 735,  'maker',        140, 'intro-currently',       'PLAZA'],
-  [1160, 1020, 'professional', 100, 'contact-linkedin',      'PLAZA'],
-  [1400, 1005, 'developer',    100, 'contact-github',        'PLAZA'],
-
-  // ── Workshop (NW) ─────────────────────────────────────────────────────
-  [340, 150,  'maker',        180, 'intro-origin',           'WORKSHOP'],
-  [760, 285,  'maker',        160, 'intro-sgw',              'WORKSHOP'],
-  [490, 390,  'maker',        140, 'project-sgw-plans',      'WORKSHOP'],
-
-  // ── Camping ───────────────────────────────────────────────────────────
-  [1370, 400,  'casual',       60, 'project-rv-build',       'CAMPING'],
-  [1470, 480,  'wife',         80, 'easter-egg-wife',        'CAMPING'],
-
-  // ── Podcast Studio (NE) ───────────────────────────────────────────────
-  [2080, 180,  'brocc',       180, 'podcast-pixel-broccoli', 'STUDIO'],
-  [1860, 315,  'podcaster',   160, 'community-sww',          'STUDIO'],
-  [2260, 375,  'casual',      140, 'sgw-youtube',            'STUDIO'],
-  [2180, 520,  'cameraman',   140, 'film-imdb',              'STUDIO'],
-
-  // ── Design Office (SW) ────────────────────────────────────────────────
-  [320, 1065,  'developer',   190, 'motif-overview',         'OFFICE'],
-  [560, 1170,  'developer',   170, 'motif-speed',            'OFFICE'],
-  [760, 1065,  'engineer',    150, 'motif-ai',               'OFFICE'],
-  [340, 1260,  'developer',   150, 'motif-tech',             'OFFICE'],
-  [640, 1305,  'engineer',    140, 'motif-leadership',       'OFFICE'],
-
-  // ── Projects Lab (SE) ─────────────────────────────────────────────────
-  [1900, 1065, 'developer',   190, 'project-portfolio-game', 'PROJECTS'],
-  [2220, 1185, 'developer',   170, 'project-brocc',          'PROJECTS'],
-
-  // ── Church ────────────────────────────────────────────────────────────
-  [2380, 700,  'professional', 100, 'church-td',             'CHURCH'],
+  [1287, 568,  'zach',  40, 'contact-zach', 'PLAZA'],
+  [1293, 936,  'maker', 170, 'intro-career', 'PLAZA'],
+  [1440, 696,  'maker', 140, 'intro-currently', 'PLAZA'],
+  [899, 944,  'professional', 100, 'contact-linkedin', 'PLAZA'],
+  [1580, 739,  'developer', 100, 'contact-github', 'PLAZA'],
+  [453, 712,  'maker', 180, 'intro-origin', 'WORKSHOP'],
+  [509, 396,  'maker', 160, 'intro-sgw', 'WORKSHOP'],
+  [221, 340,  'maker', 140, 'project-sgw-plans', 'WORKSHOP'],
+  [1435, 416,  'casual',  60, 'project-rv-build', 'CAMPING'],
+  [1111, 409,  'wife',  80, 'easter-egg-wife', 'CAMPING'],
+  [1943, 435,  'brocc', 180, 'podcast-pixel-broccoli', 'STUDIO'],
+  [1685, 289,  'podcaster', 160, 'community-sww', 'STUDIO'],
+  [2311, 486,  'casual', 140, 'sgw-youtube', 'STUDIO'],
+  [2142, 480,  'cameraman', 140, 'film-imdb', 'STUDIO'],
+  [243, 1133,  'developer', 190, 'motif-overview', 'OFFICE'],
+  [553, 1107,  'developer', 170, 'motif-speed', 'OFFICE'],
+  [750, 1118,  'engineer', 150, 'motif-ai', 'OFFICE'],
+  [408, 1296,  'developer', 150, 'motif-tech', 'OFFICE'],
+  [834, 1289,  'engineer', 140, 'motif-leadership', 'OFFICE'],
+  [1808, 1160,  'developer', 190, 'project-portfolio-game', 'PROJECTS'],
+  [2222, 1240,  'developer', 170, 'project-brocc', 'PROJECTS'],
+  [1947, 865,  'professional', 100, 'church-td', 'CHURCH'],
 ];
 
 const TILE_SIZE = 48;
@@ -107,6 +94,9 @@ export class WorldScene extends Phaser.Scene {
 
     if (new URLSearchParams(window.location.search).get('editor') === '1') {
       this.addTileEditor();
+    }
+    if (new URLSearchParams(window.location.search).get('npc-editor') === '1') {
+      this.addNPCEditor();
     }
 
     this.player = new Player(this, WORLD_W / 2 - 100, WORLD_H / 2);
@@ -1104,16 +1094,87 @@ export class WorldScene extends Phaser.Scene {
     });
   }
 
+  private saveNPCs(npcs: NPC[], btn: HTMLButtonElement) {
+    const payload = NPC_DEFS.map((def, i) => {
+      const npc = npcs[i];
+      if (!npc) return def;
+      return [Math.round(npc.sprite.x), Math.round(npc.sprite.y), def[2], def[3], def[4], def[5]];
+    });
+    btn.textContent = '💾 Saving…';
+    fetch('/api/save-npcs', { method: 'POST', body: JSON.stringify(payload) })
+      .then(r => r.json())
+      .then(() => { btn.textContent = '✅ Saved!'; setTimeout(() => { btn.textContent = '💾 Save NPC positions'; }, 2000); })
+      .catch(() => { btn.textContent = '❌ Save failed'; });
+  }
+
+  private addNPCEditor() {
+    // Overlay panel — fixed to camera
+    const panel = this.add.text(8, 8, '', {
+      fontSize: '9px', color: '#ffffff', fontFamily: 'monospace',
+      backgroundColor: '#000000cc', padding: { x: 8, y: 8 },
+      lineSpacing: 4,
+    }).setScrollFactor(0).setDepth(9999).setAlpha(0.92);
+
+    // DOM save button — declared first so dragend can reference it
+    const btn = document.createElement('button');
+    btn.textContent = '💾 Save NPC positions';
+    Object.assign(btn.style, {
+      position: 'fixed', bottom: '16px', left: '16px', zIndex: '9999',
+      padding: '8px 14px', fontSize: '13px', fontFamily: 'monospace',
+      background: '#DD4400', color: '#fff', border: 'none',
+      borderRadius: '6px', cursor: 'pointer',
+    });
+    btn.onclick = () => this.saveNPCs(this.npcs, btn);
+    document.body.appendChild(btn);
+    this.events.once('shutdown', () => btn.remove());
+
+    // Make each NPC draggable and label it
+    this.npcs.forEach((npc, i) => {
+      const def = NPC_DEFS[i];
+      const label = def ? `${def[2]} / ${def[4]}` : `npc_${i}`;
+
+      this.input.setDraggable(npc.sprite);
+      npc.sprite.on('drag', (_: unknown, dragX: number, dragY: number) => {
+        npc.sprite.setPosition(dragX, dragY);
+      });
+      npc.sprite.on('dragend', () => {
+        (npc.sprite as any)._wasDragged = true;
+        this.saveNPCs(this.npcs, btn);
+      });
+
+      // Highlight on hover
+      npc.sprite.on('pointerover', () => npc.sprite.setTint(0xffff00));
+      npc.sprite.on('pointerout',  () => npc.sprite.clearTint());
+
+      (npc.sprite as any)._editorLabel = label;
+    });
+
+    // Update panel each frame
+    this.events.on('update', () => {
+      const lines = ['NPC EDITOR — drag to reposition (autosaves on drop)\n'];
+      this.npcs.forEach(npc => {
+        const lbl = (npc.sprite as any)._editorLabel ?? '?';
+        lines.push(`${lbl}: x=${Math.round(npc.sprite.x)}, y=${Math.round(npc.sprite.y)}`);
+      });
+      panel.setText(lines.join('\n'));
+    });
+
+    this.input.on('dragstart', (_: unknown, obj: Phaser.GameObjects.GameObject) => {
+      (obj as Phaser.GameObjects.Sprite).setDepth(9998);
+    });
+  }
+
   private spawnNPCs() {
     const itemById: Record<string, typeof allPortfolioData[0]> = {};
     allPortfolioData.forEach(item => { itemById[item.id] = item; });
+    const isEditor = new URLSearchParams(window.location.search).get('npc-editor') === '1';
 
     NPC_DEFS.forEach(([x, y, outfitOrKey, radius, id, zone]) => {
       const item = itemById[id];
       if (!item) return;
       const textureBase = outfitOrKey.startsWith('char_') ? outfitOrKey : `npc_${outfitOrKey}`;
       const bounds = getZoneBounds(this.tileZoneMap, zone, TILE_SIZE);
-      this.npcs.push(new NPC(this, x, y, textureBase, item, radius, bounds));
+      this.npcs.push(new NPC(this, x, y, textureBase, item, radius, bounds, isEditor));
     });
   }
 }

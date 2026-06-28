@@ -29,6 +29,7 @@ export class NPC {
     item: PortfolioItem,
     wanderRadius = 110,
     bounds?: { minX: number; maxX: number; minY: number; maxY: number },
+    staticMode = false,         // true in editor — no wandering
   ) {
     this.scene        = scene;
     this.item         = item;
@@ -67,8 +68,11 @@ export class NPC {
       backgroundColor: '#DD4400', padding: { x: 4, y: 3 },
     }).setOrigin(0.5).setDepth(DEPTH.UI).setAlpha(0);
 
-    // Click to open
-    this.sprite.on('pointerdown', () => this.openCard());
+    // Click to open — pointerup so drag doesn't trigger it
+    this.sprite.on('pointerup', () => {
+      if ((this.sprite as any)._wasDragged) { (this.sprite as any)._wasDragged = false; return; }
+      this.openCard();
+    });
 
     // Keyboard open is handled in WorldScene (nearest NPC check)
 
@@ -79,8 +83,8 @@ export class NPC {
     scene.events.once('shutdown', cleanup);
     scene.events.once('destroy',  cleanup);
 
-    // Start wander loop
-    this.scheduleMove();
+    // Start wander loop (skipped in editor mode)
+    if (!staticMode) this.scheduleMove();
 
     // Store label ref in sprite so WorldScene can keep it above the sprite
     (this.sprite as unknown as { _label: Phaser.GameObjects.Text })._label = label;
@@ -92,7 +96,7 @@ export class NPC {
   // ── Wander ──────────────────────────────────────────────────────────────
 
   private scheduleMove() {
-    const wait = Phaser.Math.Between(1200, 3500);
+    const wait = Phaser.Math.Between(4000, 10000);
     this.scene.time.delayedCall(wait, () => {
       if (!this.sprite.active) return;
       this.walkToTarget();
@@ -101,7 +105,7 @@ export class NPC {
 
   private walkToTarget() {
     const angle  = Math.random() * Math.PI * 2;
-    const dist   = Phaser.Math.Between(20, this.wanderRadius);
+    const dist   = Phaser.Math.Between(10, Math.min(40, this.wanderRadius * 0.3));
     const tx     = Phaser.Math.Clamp(this.home.x + Math.cos(angle) * dist, this.bounds.minX, this.bounds.maxX);
     const ty     = Phaser.Math.Clamp(this.home.y + Math.sin(angle) * dist, this.bounds.minY, this.bounds.maxY);
     const dx     = tx - this.sprite.x;
