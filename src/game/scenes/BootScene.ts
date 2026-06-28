@@ -39,7 +39,10 @@ export class BootScene extends Phaser.Scene {
     this.load.image('npc_wife_s',         'assets/wife_s.png');
     this.load.image('npc_wife_n',         'assets/wife_n.png');
 
-    this.load.on('complete', () => { window.dispatchEvent(new CustomEvent('portfolio:ready')); });
+    this.load.on('complete', () => {
+      (window as any).__portfolioReady = true;
+      window.dispatchEvent(new CustomEvent('portfolio:ready'));
+    });
 
     this.generateTextures();
   }

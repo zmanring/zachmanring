@@ -21,7 +21,7 @@ export function GameContainer() {
   const openDirectory  = useCallback(() => setShowDirectory(true),  []);
   const closeDirectory = useCallback(() => setShowDirectory(false), []);
 
-  // Track the Phaser canvas position/size (it's centered + letterboxed by Phaser's FIT scale)
+  // Track the Phaser canvas position/size (centered + letterboxed by Phaser's FIT scale)
   useEffect(() => {
     let canvas: HTMLCanvasElement | null = null;
     let ro: ResizeObserver | null = null;
@@ -33,19 +33,20 @@ export function GameContainer() {
       setCanvasRect({ top: br.top - cr.top, left: br.left - cr.left, width: br.width, height: br.height });
     };
 
-    // Phaser appends the canvas asynchronously — watch for it
-    const mo = new MutationObserver(() => {
-      canvas = containerRef.current?.querySelector('canvas') ?? null;
-      if (canvas) {
-        ro = new ResizeObserver(updateRect);
-        ro.observe(canvas);
-        updateRect();
-        mo.disconnect();
-      }
-    });
-    if (containerRef.current) mo.observe(containerRef.current, { childList: true });
+    // Poll every 100ms until Phaser appends the canvas — works in both dev and prod
+    const poll = setInterval(() => {
+      if (canvas) return;
+      const c = containerRef.current?.querySelector('canvas');
+      if (!c) return;
+      canvas = c as HTMLCanvasElement;
+      ro = new ResizeObserver(updateRect);
+      ro.observe(canvas);
+      updateRect();
+      clearInterval(poll);
+    }, 100);
+
     window.addEventListener('resize', updateRect);
-    return () => { mo.disconnect(); ro?.disconnect(); window.removeEventListener('resize', updateRect); };
+    return () => { clearInterval(poll); ro?.disconnect(); window.removeEventListener('resize', updateRect); };
   }, [containerRef]);
 
   useEffect(() => {

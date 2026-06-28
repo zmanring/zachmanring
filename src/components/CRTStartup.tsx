@@ -39,9 +39,10 @@ export function CRTStartup({ style }: { style?: React.CSSProperties }) {
   const [msgIndex, setMsgIndex] = useState(0);
   const [gameReady, setGameReady] = useState(false);
 
-  // Listen for Phaser load complete
+  // Listen for Phaser load complete — also check if it already fired before mount
   useEffect(() => {
-    const h = () => setGameReady(true);
+    if ((window as any).__portfolioReady) { setGameReady(true); return; }
+    const h = () => { (window as any).__portfolioReady = true; setGameReady(true); };
     window.addEventListener('portfolio:ready', h);
     return () => window.removeEventListener('portfolio:ready', h);
   }, []);
