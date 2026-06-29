@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { allPortfolioData, type PortfolioItem } from '../data/portfolio';
 import { ZONE_DEFS } from '../data/zones';
 
@@ -11,12 +11,38 @@ interface Props {
 
 export function Directory({ onClose }: Props) {
   const itemById = Object.fromEntries(allPortfolioData.map(i => [i.id, i]));
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', h);
     return () => window.removeEventListener('keydown', h);
   }, [onClose]);
+
+  // Focus the dialog on open
+  useEffect(() => { dialogRef.current?.focus(); }, []);
+
+  // Focus trap
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const trap = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      const focusable = Array.from(
+        dialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last  = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    };
+    dialog.addEventListener('keydown', trap);
+    return () => dialog.removeEventListener('keydown', trap);
+  }, []);
 
   const openItem = (item: PortfolioItem) => {
     // Don't close — InfoCard (z:9999) stacks on top of Directory (z:9998).
@@ -26,12 +52,18 @@ export function Directory({ onClose }: Props) {
 
   return (
     <div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="directory-title"
+      tabIndex={-1}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
       style={{
         position: 'fixed', inset: 0, zIndex: 9998,
         background: 'rgba(0,0,0,0.94)',
         overflowY: 'auto',
         boxSizing: 'border-box',
+        outline: 'none',
       }}
     >
       <div style={{ maxWidth: 880, margin: '0 auto', padding: '36px 24px 64px' }}>
@@ -45,7 +77,7 @@ export function Directory({ onClose }: Props) {
             <div style={{ fontFamily: FONT, fontSize: 9, color: ORANGE, marginBottom: 10, letterSpacing: '0.06em' }}>
               // PORTFOLIO DIRECTORY
             </div>
-            <div style={{ fontFamily: FONT, fontSize: 20, color: '#F0EDE8', lineHeight: 1.6 }}>
+            <div id="directory-title" style={{ fontFamily: FONT, fontSize: 20, color: '#F0EDE8', lineHeight: 1.6 }}>
               ZACH MANRING
             </div>
             <div style={{ fontFamily: FONT, fontSize: 8, color: '#888', marginTop: 8 }}>
@@ -125,7 +157,7 @@ export function Directory({ onClose }: Props) {
                       </div>
                       <div style={{
                         fontFamily: 'system-ui, sans-serif', fontSize: 12,
-                        color: '#777', lineHeight: 1.5,
+                        color: '#999', lineHeight: 1.5,
                       }}>
                         {item.shortDesc}
                       </div>

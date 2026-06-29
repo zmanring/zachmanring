@@ -98,53 +98,26 @@ export function GameContainer() {
           }}
         />
 
-        {/* Scanlines */}
+        {/* Static CRT glass effects — vignette, glare, corners, phosphor tint — one composited layer */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: `
+            radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0,0,0,0.55) 80%, rgba(0,0,0,0.88) 100%),
+            radial-gradient(circle at 0% 0%,    rgba(0,0,0,0.55) 0%, transparent 35%),
+            radial-gradient(circle at 100% 0%,  rgba(0,0,0,0.55) 0%, transparent 35%),
+            radial-gradient(circle at 0% 100%,  rgba(0,0,0,0.55) 0%, transparent 35%),
+            radial-gradient(circle at 100% 100%,rgba(0,0,0,0.55) 0%, transparent 35%),
+            radial-gradient(ellipse at 50% -15%, rgba(255,255,255,0.04) 0%, transparent 55%)
+          `,
+        }} />
+
+        {/* Scanlines — only animated layer; willChange promotes to its own compositor layer */}
         <div style={{
           position: 'absolute', inset: 0,
           background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.09) 2px, rgba(0,0,0,0.09) 4px)',
           animation: 'crtFlicker 0.18s steps(1) infinite, crtScan 0.12s linear infinite',
           animationFillMode: 'both',
-          willChange: 'transform',
-        }} />
-
-        {/* Vignette — outer ring */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0,0,0,0.45) 80%, rgba(0,0,0,0.82) 100%)',
-        }} />
-
-        {/* Vignette — inner dark edge, tight to the border */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.75) 85%, rgba(0,0,0,0.95) 100%)',
-          mixBlendMode: 'multiply',
-        }} />
-
-        {/* Screen glare arc — top-center highlight like old CRT glass */}
-        <div style={{
-          position: 'absolute',
-          top: '-25%', left: '15%', right: '15%',
-          height: '55%',
-          background: 'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.045) 0%, transparent 65%)',
-          borderRadius: '50%',
-        }} />
-
-        {/* Corner darkening for curved-screen illusion */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: `
-            radial-gradient(circle at 0% 0%,   rgba(0,0,0,0.55) 0%, transparent 35%),
-            radial-gradient(circle at 100% 0%,  rgba(0,0,0,0.55) 0%, transparent 35%),
-            radial-gradient(circle at 0% 100%,  rgba(0,0,0,0.55) 0%, transparent 35%),
-            radial-gradient(circle at 100% 100%,rgba(0,0,0,0.55) 0%, transparent 35%)
-          `,
-        }} />
-
-        {/* Horizontal phosphor smear — faint green tint on bright areas */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'rgba(20, 40, 20, 0.04)',
-          mixBlendMode: 'screen',
+          willChange: 'transform, opacity',
         }} />
       </div>}
       {showDirectory && <Directory onClose={closeDirectory} />}

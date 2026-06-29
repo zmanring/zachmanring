@@ -25,6 +25,13 @@ export function useInfoCard() {
     const onOpen = (e: Event) => {
       const item = (e as CustomEvent<PortfolioItem>).detail;
       const z = getItemZone(item.id);
+      if (!(z.ids as readonly string[]).includes(item.id)) {
+        // Item not in any zone (easter egg etc.) — standalone card, no zone nav
+        setZone(null);
+        setItems([item]);
+        setIndex(0);
+        return;
+      }
       const zItems = itemsForZone(z);
       const idx = zItems.findIndex(i => i.id === item.id);
       loadZone(z, idx >= 0 ? idx : 0);

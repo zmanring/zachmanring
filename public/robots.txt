@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zachmanring.me/sitemap.xml
+Sitemap: https://www.zachmanring.com/sitemap.xml

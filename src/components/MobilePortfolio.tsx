@@ -132,7 +132,7 @@ export function MobilePortfolio() {
         <div style={{
           marginTop: 14, padding: '8px 12px',
           border: '1px solid #333', background: '#1A1A1A',
-          fontFamily: FONT, fontSize: 7, color: '#555', lineHeight: 1.8,
+          fontFamily: FONT, fontSize: 7, color: '#999', lineHeight: 1.8,
         }}>
           ★ full interactive experience on desktop
         </div>
@@ -173,6 +173,8 @@ export function MobilePortfolio() {
         ))}
         <a
           href="https://linkedin.com/in/zachmanring"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             fontFamily: FONT, fontSize: 7,
             color: '#F0EDE8', textDecoration: 'none',

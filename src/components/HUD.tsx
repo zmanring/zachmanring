@@ -97,7 +97,7 @@ export function HUD({ onMenuClick }: { onMenuClick?: () => void }) {
 
       {/* WORLD — centered */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-        <span style={{ fontSize: 7, color: '#666666' }}>WORLD</span>
+        <span style={{ fontSize: 7, color: '#999999' }}>WORLD</span>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
           <span style={{ fontSize: 12, color: '#F0EDE8', transition: 'opacity 0.3s' }}>{world}</span>
           <span style={{ fontSize: 7, color: ORANGE, transition: 'opacity 0.3s' }}>{subtitle}</span>
