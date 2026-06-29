@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { PLAYER_SPEED, DEPTH } from '../constants';
+import { PLAYER_SPEED, DEPTH, FONT } from '../constants';
 
 type Dir = 'S' | 'N' | 'E';
 
@@ -34,6 +34,14 @@ export class Player {
   private readonly EMOJIS = ['☕', '💻', '🔨', '🎙️', '🏕️', '🎮', '🌲', '📐'];
   private readonly IDLE_TRIGGER = 5000; // ms before bubble appears
 
+  // First-move hint arrows
+  private hintLeft!:  Phaser.GameObjects.Text;
+  private hintRight!: Phaser.GameObjects.Text;
+  private hintUp!:    Phaser.GameObjects.Text;
+  private hintDown!:  Phaser.GameObjects.Text;
+  private hintLabel!: Phaser.GameObjects.Text;
+  private hintDismissed = false;
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
     this.shadow = scene.add.ellipse(x, y + 30, 18, 7, 0x000000, 0.22).setDepth(DEPTH.PLAYER - 1);
@@ -50,6 +58,30 @@ export class Player {
     this.bubble = scene.add.text(0, 0, '', {
       fontSize: '14px', padding: { x: 6, y: 4 },
     }).setOrigin(0.5).setDepth(DEPTH.PLAYER + 2).setAlpha(0);
+
+    // First-move hint
+    const hintStyle = { fontSize: '14px', color: '#F0EDE8', alpha: 0.85 };
+    const hintDepth = DEPTH.PLAYER + 3;
+    this.hintLeft  = scene.add.text(x - 38, y,      '←', hintStyle).setOrigin(0.5).setDepth(hintDepth);
+    this.hintRight = scene.add.text(x + 38, y,      '→', hintStyle).setOrigin(0.5).setDepth(hintDepth);
+    this.hintUp    = scene.add.text(x,      y - 52, '↑', hintStyle).setOrigin(0.5).setDepth(hintDepth);
+    this.hintDown  = scene.add.text(x,      y + 52, '↓', hintStyle).setOrigin(0.5).setDepth(hintDepth);
+    this.hintLabel = scene.add.text(x, y, '', {}).setDepth(hintDepth); // unused, kept for cleanup ref
+
+    // Pulse the arrows
+    [this.hintLeft, this.hintRight, this.hintUp, this.hintDown].forEach((h, i) => {
+      const offsets = [[-6, 0], [6, 0], [0, -6], [0, 6]];
+      scene.tweens.add({
+        targets: h,
+        x: h.x + offsets[i][0],
+        y: h.y + offsets[i][1],
+        alpha: 0.3,
+        duration: 600,
+        yoyo: true, repeat: -1,
+        ease: 'Sine.InOut',
+        delay: i * 80,
+      });
+    });
 
     const kb = scene.input.keyboard!;
     this.keys = {
@@ -115,6 +147,14 @@ export class Player {
     const bx = this.sprite.x + 20;
     const by = this.sprite.y - 52;
 
+    // Dismiss movement hints on first move
+    if (this.moving && !this.hintDismissed) {
+      this.hintDismissed = true;
+      const hints = [this.hintLeft, this.hintRight, this.hintUp, this.hintDown, this.hintLabel];
+      this.scene.tweens.killTweensOf(hints);
+      this.scene.tweens.add({ targets: hints, alpha: 0, duration: 400, onComplete: () => hints.forEach(h => h.destroy()) });
+    }
+
     if (this.moving) {
       // Stop breathing while walking, reset scale
       this.idleTimer = 0;
@@ -144,6 +184,15 @@ export class Player {
     if (this.bubbleVisible) {
       this.bubble.setPosition(bx, by);
       this.bubbleBg.setPosition(bx, by);
+    }
+
+    if (!this.hintDismissed) {
+      const { x, y } = this.sprite;
+      this.hintLeft.setPosition(x - 38, y);
+      this.hintRight.setPosition(x + 38, y);
+      this.hintUp.setPosition(x, y - 52);
+      this.hintDown.setPosition(x, y + 52);
+      this.hintLabel.setPosition(x, y + 70);
     }
   }
 
