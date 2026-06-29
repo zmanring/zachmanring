@@ -1,5 +1,5 @@
 ---
-outfit: maker
+outfit: casual
 id: project-sgw-plans
 levelId: 4
 type: project

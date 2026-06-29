@@ -13,8 +13,8 @@ export class BootScene extends Phaser.Scene {
     // Audio
     this.load.audio('hello', 'assets/hello.mp3');
     // Zach sprites — used for both NPC and player
-    this.load.image('npc_zach_s', 'assets/zach_s.png');
-    this.load.image('npc_zach_n', 'assets/zach_n.png');
+    this.load.image('npc_zach_s', 'assets/me_s.png');
+    this.load.image('npc_zach_n', 'assets/me_n.png');
     this.load.image('player_s',   'assets/zach_s.png');
     this.load.image('player_n',   'assets/zach_n.png');
     this.load.image('player_s_b', 'assets/zach_s_b.png');
@@ -38,6 +38,8 @@ export class BootScene extends Phaser.Scene {
     this.load.image('npc_brocc_n',        'assets/brocc_n.png');
     this.load.image('npc_wife_s',         'assets/wife_s.png');
     this.load.image('npc_wife_n',         'assets/wife_n.png');
+    this.load.image('npc_woodworker_s',   'assets/woodworker_s.png');
+    this.load.image('npc_woodworker_n',   'assets/woodworker_n.png');
     // Dog sprites (Max + Ozzy)
     this.load.image('dog_max_s',  'assets/max_s.png');
     this.load.image('dog_max_n',  'assets/max_n.png');

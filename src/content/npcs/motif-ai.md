@@ -1,5 +1,5 @@
 ---
-outfit: engineer
+outfit: developer
 id: motif-ai
 levelId: 2
 type: info

@@ -1,5 +1,5 @@
 ---
-outfit: maker
+outfit: woodworker
 id: community-sww
 levelId: 3
 type: info

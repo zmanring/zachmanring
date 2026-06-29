@@ -1,5 +1,5 @@
 ---
-outfit: maker
+outfit: woodworker
 id: intro-sgw
 levelId: 1
 type: project
