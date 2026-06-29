@@ -155,8 +155,8 @@ export class Player {
       this.scene.tweens.add({ targets: hints, alpha: 0, duration: 400, onComplete: () => hints.forEach(h => h.destroy()) });
     }
 
-    if (this.moving) {
-      // Stop breathing while walking, reset scale
+    if (this.moving || !this.inputEnabled) {
+      // Reset idle when moving OR when a card is open (don't show bubble during popups)
       this.idleTimer = 0;
       if (this.bubbleVisible) {
         this.bubbleVisible = false;
