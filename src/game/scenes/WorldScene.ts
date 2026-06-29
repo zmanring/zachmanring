@@ -18,6 +18,7 @@ const NPC_DEFS: [number, number, string, number, string, string][] = [
   [453, 712,  'maker', 180, 'intro-origin', 'WORKSHOP'],
   [509, 396,  'maker', 160, 'intro-sgw', 'WORKSHOP'],
   [221, 340,  'maker', 140, 'project-sgw-plans', 'WORKSHOP'],
+  [650, 450,  'maker', 140, 'project-3d-printing', 'WORKSHOP'],
   [1435, 416,  'casual',  60, 'project-rv-build', 'CAMPING'],
   [1111, 409,  'wife',  80, 'easter-egg-wife', 'CAMPING'],
   [1943, 435,  'brocc', 180, 'podcast-pixel-broccoli', 'STUDIO'],
@@ -1176,7 +1177,8 @@ export class WorldScene extends Phaser.Scene {
     NPC_DEFS.forEach(([x, y, outfitOrKey, radius, id, zone]) => {
       const item = itemById[id];
       if (!item) return;
-      const textureBase = outfitOrKey.startsWith('char_') ? outfitOrKey : `npc_${outfitOrKey}`;
+      const outfit = (item as any).outfit ?? outfitOrKey;
+      const textureBase = outfit.startsWith('char_') ? outfit : `npc_${outfit}`;
       const bounds = getZoneBounds(this.tileZoneMap, zone, TILE_SIZE);
       this.npcs.push(new NPC(this, x, y, textureBase, item, radius, bounds, isEditor));
     });

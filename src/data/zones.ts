@@ -21,7 +21,7 @@ export const ZONE_DEFS = [
     sub: 'maker & builder',
     color: '#DD4400',
     bg: '#111111',
-    ids: ['intro-origin', 'intro-sgw', 'project-rv-build', 'project-sgw-plans'],
+    ids: ['intro-origin', 'intro-sgw', 'project-rv-build', 'project-3d-printing', 'project-sgw-plans'],
   },
   {
     id: 'STUDIO',

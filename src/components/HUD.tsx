@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 const FONT = '"Press Start 2P", monospace';
 const ORANGE = '#DD4400';
 const GREY = '#222222';
-const MAX_SCORE = 4400; // 22 NPCs × 200pts
+const MAX_SCORE = 4600; // 23 NPCs × 200pts
 
 const LINKS = {
   contact: 'https://linkedin.com/in/zachmanring',
