@@ -156,8 +156,9 @@ export class NPC {
       const dir  = this.movingNorth ? 'n' : 's';
       this.sprite.setTexture(`${base}_${dir}`);
     }
-    // flip for left-facing (works for both SVG and procedural)
-    this.sprite.setFlipX(body.velocity.x < -5);
+    // North shows the back — left/right is mirrored, same logic as Player
+    const movingLeft = body.velocity.x < -5;
+    this.sprite.setFlipX(this.movingNorth ? !movingLeft : movingLeft);
   }
 
   // ── Proximity + prompt ──────────────────────────────────────────────────

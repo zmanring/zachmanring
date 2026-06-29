@@ -38,6 +38,11 @@ export class BootScene extends Phaser.Scene {
     this.load.image('npc_brocc_n',        'assets/brocc_n.png');
     this.load.image('npc_wife_s',         'assets/wife_s.png');
     this.load.image('npc_wife_n',         'assets/wife_n.png');
+    // Dog sprites (Max + Ozzy)
+    this.load.image('dog_max_s',  'assets/max_s.png');
+    this.load.image('dog_max_n',  'assets/max_n.png');
+    this.load.image('dog_ozzy_s', 'assets/ozzy_s.png');
+    this.load.image('dog_ozzy_n', 'assets/ozzy_n.png');
 
     this.load.on('complete', () => {
       (window as any).__portfolioReady = true;

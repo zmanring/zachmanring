@@ -4,6 +4,7 @@ import {
 } from '../constants';
 import { Player } from '../objects/Player';
 import { NPC } from '../objects/NPC';
+import { Dog } from '../objects/Dog';
 import { allPortfolioData } from '../../data/portfolio';
 import zoneData from '../../data/zones.json';
 
@@ -65,6 +66,7 @@ function detectZone(x: number, y: number, tileZoneMap: Record<string, string> = 
 export class WorldScene extends Phaser.Scene {
   private player!:      Player;
   private npcs:         NPC[] = [];
+  private dogs:         Dog[] = [];
   private currentZone = '';
   private tileZoneMap: Record<string, string> = {};
   private walls!: Phaser.Physics.Arcade.StaticGroup;
@@ -92,6 +94,7 @@ export class WorldScene extends Phaser.Scene {
     });
     this.buildWalls();
     this.spawnNPCs();
+    this.spawnDogs();
 
     if (new URLSearchParams(window.location.search).get('editor') === '1') {
       this.addTileEditor();
@@ -103,6 +106,7 @@ export class WorldScene extends Phaser.Scene {
     this.player = new Player(this, WORLD_W / 2 - 100, WORLD_H / 2);
     this.physics.add.collider(this.player.sprite, this.walls);
     this.npcs.forEach(npc => this.physics.add.collider(npc.sprite, this.walls));
+    this.dogs.forEach(dog => this.physics.add.collider(dog.sprite, this.walls));
 
     this.cameras.main.startFollow(this.player.sprite, true, CAMERA_LERP, CAMERA_LERP);
     this.cameras.main.setDeadzone(90, 60);
@@ -125,6 +129,7 @@ export class WorldScene extends Phaser.Scene {
     this.player.update();
     const { x, y } = this.player;
     this.npcs.forEach(n => n.update(x, y));
+    this.dogs.forEach(d => d.update());
 
     const zone = detectZone(x, y, this.tileZoneMap);
     if (zone !== this.currentZone) {
@@ -1167,6 +1172,15 @@ export class WorldScene extends Phaser.Scene {
     this.input.on('dragstart', (_: unknown, obj: Phaser.GameObjects.GameObject) => {
       (obj as Phaser.GameObjects.Sprite).setDepth(9998);
     });
+  }
+
+  private spawnDogs() {
+    const max  = new Dog(this, 1200, 880, 'Max',  'dog_max');
+    const ozzy = new Dog(this, 1260, 920, 'Ozzy', 'dog_ozzy');
+    // Brothers — each wanders near the other
+    max.companion  = ozzy;
+    ozzy.companion = max;
+    this.dogs.push(max, ozzy);
   }
 
   private spawnNPCs() {
