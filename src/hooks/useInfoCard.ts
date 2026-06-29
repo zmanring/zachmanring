@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { allPortfolioData, type PortfolioItem } from '../data/portfolio';
 import { getItemZone, getAdjacentZone, type ZoneDef } from '../data/zones';
+import { trackEvent } from '../analytics';
 
 function itemsForZone(zone: ZoneDef): PortfolioItem[] {
   const byId = Object.fromEntries(allPortfolioData.map(i => [i.id, i]));
@@ -25,6 +26,10 @@ export function useInfoCard() {
     const onOpen = (e: Event) => {
       const item = (e as CustomEvent<PortfolioItem>).detail;
       const z = getItemZone(item.id);
+
+      // Track popup open in Google Analytics
+      trackEvent('popup_open', { zone_name: z.id, item_id: item.id, item_title: item.title });
+
       if (!(z.ids as readonly string[]).includes(item.id)) {
         // Item not in any zone (easter egg etc.) — standalone card, no zone nav
         setZone(null);
@@ -40,6 +45,7 @@ export function useInfoCard() {
       setZone(null);
       setItems([]);
       setIndex(0);
+      trackEvent('popup_close');
     };
     window.addEventListener('portfolio:openCard', onOpen);
     window.addEventListener('portfolio:closeCard', onClose);
@@ -57,6 +63,7 @@ export function useInfoCard() {
   }, []);
 
   const next = useCallback(() => {
+    trackEvent('popup_navigate', { direction: 'next' });
     if (index < items.length - 1) {
       setIndex(i => i + 1);
     } else if (zone) {
@@ -66,6 +73,7 @@ export function useInfoCard() {
   }, [index, items.length, zone, loadZone]);
 
   const prev = useCallback(() => {
+    trackEvent('popup_navigate', { direction: 'prev' });
     if (index > 0) {
       setIndex(i => i - 1);
     } else if (zone) {

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { PortfolioItem } from '../data/portfolio';
+import { trackEvent } from '../analytics';
 
 interface Props {
   item: PortfolioItem;
@@ -224,6 +225,7 @@ export function InfoCard({
             href={item.link}
             target={item.link.startsWith('mailto') ? undefined : '_blank'}
             rel="noopener noreferrer"
+            onClick={() => trackEvent('cta_click', { item_id: item.id, item_title: item.title, link_url: item.link as string })}
             style={{
               display: 'inline-block', marginTop: 24,
               padding: '12px 24px',

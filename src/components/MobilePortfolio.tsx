@@ -3,6 +3,7 @@ import { ZONE_DEFS } from '../data/zones';
 import { InfoCard } from './InfoCard';
 import { useInfoCard } from '../hooks/useInfoCard';
 import { useState, useEffect } from 'react';
+import { trackEvent } from '../analytics';
 
 const FONT   = '"Press Start 2P", monospace';
 const ORANGE = '#DD4400';
@@ -161,6 +162,7 @@ export function MobilePortfolio() {
             href={l.href}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent('mobile_link_click', { label: l.label, link_url: l.href })}
             style={{
               fontFamily: FONT, fontSize: 7,
               color: '#AAAAAA', textDecoration: 'none',
@@ -175,6 +177,7 @@ export function MobilePortfolio() {
           href="https://linkedin.com/in/zachmanring"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackEvent('mobile_link_click', { label: 'LINKEDIN', link_url: 'https://linkedin.com/in/zachmanring' })}
           style={{
             fontFamily: FONT, fontSize: 7,
             color: '#F0EDE8', textDecoration: 'none',
