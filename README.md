@@ -1,4 +1,4 @@
-# Zach Manring — zachmanring.me
+# Zach Manring — www.zachmanring.com
 
 **Design Systems Architect · Front-End Engineer · Maker · Podcast Host**
 Atlanta, GA
@@ -19,7 +19,7 @@ This is my portfolio — built as an interactive side-scrolling game using **Pha
 
 All graphics are procedurally generated. No external assets at launch.
 
-**Play it:** [zachmanring.me](https://zachmanring.me)
+**Play it:** [www.zachmanring.com](https://www.zachmanring.com)
 
 ---
 
